@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>🌦️ Weather App (Promise)</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #74ebd5, #9face6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .weather-card {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0px 5px 15px rgba(0,0,0,0.2);
+      text-align: center;
+      width: 300px;
+    }
+
+    input {
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      width: 80%;
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 10px 15px;
+      border: none;
+      background: #4a90e2;
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #357ab8;
+    }
+
+    .result {
+      margin-top: 15px;
+    }
+
+    .temp {
+      font-size: 2em;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="weather-card">
+    <h2> Weather App (Promise)</h2>
+
+    <input type="text" id="city" placeholder="Enter city name">
+
+   // id="city" → JavaScript isi ID se value uthayegi. 
+    <button onclick="getWeather()">Get Weather</button>
+// Button click hone par getWeather() function run hota hai.
+    <div id="output" class="result"></div>
+  </div>
+
+  <script>
+    function getWeather() {
+
+      const city = document.getElementById("city").value;
+
+      if (city === "") {
+        alert("Please enter a city name!");
+        return;
+      }
+
+      const apiKey = "b7372c9c7f409489f512ee1e49f53792"; // 
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
+
+      // 🔥 Promise chain start
+      fetch(url)
+      // `fetch()` API ko request bhejta hai.
+// `url` me weather API ka address hota hai.
+// Yeh foran data return nahi karta.
+// Yeh ek **Promise** return karta hai.
+
+//yee fetch ke andar browser already kuch aisa kar raha hota hai: haa 
+// new Promise(function(resolve, reject){
+
+   // agar API se data mil gaya
+   //resolve(response);
+
+   // agar error aya
+   //reject(error);
+
+//});
+
+// .then() Promise ka success handler hota hai.
+// Anonymous Function Is function ka koi naam nahi hai. (res) parameter haa
+// yaha callback ho rha haa Q k kesi function ko call krte waqt us k argument k andar kesi or function ko use krna call back haa
+
+// .then() ke andar jo function dete hain, wo tab chalta hai jab Promise complete ho jaye.
+        .then(function(res) {
+
+          // fetch ka response JSON mein convert bhi Promise hai
+          return res.json();
+
+
+          //`fetch(url)` jab API ko request bhejta hai to humein direct usable data nahi milta, balki ek response object milta hai jisme status, headers aur body hoti hai. API ka actual data aksar text/string format mein hota hai, jaise `'{"name":"Karachi","temp":35}'`. Is data ko normal JavaScript object mein convert karne ke liye `res.json()` use hota hai. Ye JSON text ko object mein badal deta hai taa ke hum `data.name` ya `data.temp` jaisi values use kar saken. Kyunki ye conversion process thora time leta hai, isliye `res.json()` bhi ek Promise return karta hai. Isi wajah se hum uske baad doosra `.then()` lagate hain jahan converted data milta hai.
+
+
+        })
+        .then(function(data) {
+
+          if (data.cod === "404") {
+            document.getElementById("output").innerHTML =
+              `<p>City not found!</p>`;
+          } else {
+            document.getElementById("output").innerHTML = `
+              <h3>${data.name}, ${data.sys.country}</h3>
+              <p class="temp">🌡️ ${data.main.temp}℃</p>
+              <p>${data.weather[0].description}</p>
+              <p>Wind: ${data.wind.speed} m/s</p>
+            `;
+          }
+
+        })
+        .catch(function(error) {
+
+          document.getElementById("output").innerHTML =
+            `<p>Error fetching data.</p>`;
+
+          console.log(error);
+
+        });
+
+    }
+  </script>
+
+</body>
+</html>
