@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+
+</head>
+<body>
+
+    <script>
+       class Student {
+    greet() {
+        console.log("Hello");
+    }
+
+    study() {
+        console.log("Studying...");
+    }
+}
+
+const s1 = new Student();
+
+s1.greet();
+s1.study();
+
+
+// Phir Hum Constructor Kyun Banate Hain?  Jab object create hote hi usko initial values deni hon.
+
+
+class Students {
+    constructor(name, age) {
+        this.name = name;
+        // this ke bina:
+
+// 👉 data “object ke andar store hi nahi hota”
+        this.age = age;
+    }
+
+    introduce() {
+        console.log(`My name is ${this.name} and I am ${this.age} years old.`);
+    }
+}
+
+const student1 = new Students("Manal", 23);
+const student2 = new Students("Ali", 21);
+
+// Yahan constructor object bante waqt data receive kar raha hai.
+
+student1.introduce();
+student2.introduce();
+
+
+
+// agr constructor na hoo too
+
+// class Student {}
+
+// const d1 = new Student();
+
+// d1.name = "Manal";
+// d1.age = 23; 
+
+
+
+// Inheritance
+
+class Person{
+
+    sleep(){
+        console.log("this person is sleeeping");
+    }
+
+    eat(){
+        console.log("this person is Eating");
+
+    }
+}
+
+class Engineer extends Person{
+    work(){
+        console.log("this person is Working");
+
+    }
+}
+
+let p= new Engineer()
+
+
+// p.eat() console pr likhna ha
+
+
+    </script>
+</body>
+</html>
